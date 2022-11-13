@@ -1,4 +1,4 @@
-# PEN toolbox+PPsystemを使った化学反応ネットワーク自動設計・シミュレーションツール
+# 化学反応ネットワーク自動設計・シミュレーションツール(PEN toolbox + PPsystem)
 
 # 概要
 
