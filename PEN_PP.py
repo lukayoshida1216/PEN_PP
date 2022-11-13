@@ -380,58 +380,43 @@ plt.savefig("G1=11_G2=1_G3=10"+".png")
 #Bistable Switch(双安定性スイッチ）：PEN一つとPP一つからなる
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+############ユーザーはここだけ変更########################################################
+G1 = Species("G1",5,1.0, 10.0) 
+N= Species("N",0.01,2.0, 100.0)    #名前、濃度、拡散、安定性(stability)
+P1=  Species("P1",0,2.0, 1.0)
+P2=  Species("P2",1,2.0, 1.0)    
+#######################################################################################
+edge1=Edge("PEN",G1 , [N,P1], [N])   
+edge2=Edge("PP", P2, [N], [P1])  
+edges=[edge1,edge2]
+species = [N,P1,P2]
+for s in [N,P1]:
+    edges.append(Edge("Exo",None,[s],[]))
+species += [G1]
 
-def injection_event(t,y, spike_time=100):
-    return spike_time-t
+reactionfactory=ReactionFactory("Bistable　Switch",species)   #インスタンス変数
+reactions = []
+for edge in edges:
+    all_gen = reactionfactory.get_reactions(edge)
+    print(all_gen)
+    species += all_gen[0]
+    reactions += all_gen[1]
+    print("\n")
+args=( species, reactions)    #Species Reaction
 
-def example_plot(ax):
-    ax.plot([1, 2])
-    ax.set_xlabel('x-label', fontsize=12)
-    ax.set_ylabel('y-label', fontsize=12)
-    ax.set_title('Title', fontsize=14)
-    
-count=0   
-fig, axs = plt.subplots(nrows=6, ncols=6, constrained_layout=True)  #グリッドの行・列
+res = solve_ivp(compute,[0,100],[s.init_conc for s in species],args=args)    #微分方程式をとく。関数f,t、初期値、Species Reaction
+#solve_ivp(関数、時間、[A0、B0、C0、,,,](species,reactions))
 
-#
-for i in np.arange(0,30,5):  
-    for j in np.arange(0,60,10):
-        count=count+1  #number of loop
-        G1 = Species("G1",5,1.0, 10.0) 
-        N= Species("N",0.01+i,2.0, 100.0)    #濃度、拡散、パラメータ
-        P1=  Species("P1",0,2.0, 1.0)
-        P2=  Species("P2",1+j,2.0, 1.0)    
-        edge1=Edge("PEN",G1 , [N,P1], [N])   
-        edge2=Edge("PP", P2, [N], [P1])  
-        edges=[edge1,edge2]
-        species = [N,P1,P2]
-        for s in [N,P1]:
-            edges.append(Edge("Exo",None,[s],[]))
-        species += [G1]
+fig = plt.figure
+ax = plt.subplot(111)
+ax.plot(res.t,(res.y[:3]).T)    #これはただこの関数を試しただけ  時間を横軸に。yって何？初期値？
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 
-        reactionfactory=ReactionFactory("Bistable　Switch",species)   #インスタンス変数
-        reactions = []
-        for edge in edges:
-            all_gen = reactionfactory.get_reactions(edge)
-            print(all_gen)
-            species += all_gen[0]
-            reactions += all_gen[1]
-            print("\n")
-        args=( species, reactions)    #Species Reaction
+# Put a legend to the right of the current axis
+ax.legend([s.name for s in species], loc='center left', bbox_to_anchor=(1, 0.5))
+plt.savefig("Bistable:N=5_P2=1"+".png")
 
-        res = solve_ivp(compute,[0,100],[s.init_conc for s in species],args=args)    #微分方程式をとく。関数f,t、初期値、Species Reaction
-        #solve_ivp(関数、時間、[A0、B0、C0、,,,](species,reactions))
-
-        fig = plt.figure
-        ax = plt.subplot(111)
-        ax.plot(res.t,(res.y[:3]).T)    #これはただこの関数を試しただけ  時間を横軸に。yって何？初期値？
-        box = ax.get_position()
-        ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
-        
-        # Put a legend to the right of the current axis
-        ax.legend([s.name for s in species], loc='center left', bbox_to_anchor=(1, 0.5))
-        plt.savefig("2Bistable"+str(count)+":N="+str(i)+"P2="+str(j)+".png")
-    
-        #画像を保存
+#画像を保存
   
 
