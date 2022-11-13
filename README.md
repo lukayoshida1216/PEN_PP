@@ -28,6 +28,7 @@ PEN toolboxは、任意の化学反応ネットワークを作るためのフレ
 
 # 実行環境
 ・Jupyter Notebook 6.4.11
+
 ・Python 3.10.4
 
 # 目的
