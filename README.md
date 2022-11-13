@@ -14,11 +14,21 @@ PEN toolboxは、任意の化学反応ネットワークを作るためのフレ
 <img width="360" alt="スクリーンショット 2022-11-14 0 20 08" src="https://user-images.githubusercontent.com/93179388/201529358-c1b8e6e1-8688-47f3-8db3-ec66e280be98.png">
 
 # 使い方
-以下にあるように、OligaterとBistable Switchの入力は既に実装済みである。Oligatorの化学反応ネットワークに基づくシミュレーションをしたい場合は、以下の332行〜337行までの各化学物質のパラメータ（名前、濃度、拡散定数、安定性）を適宜変更、Bistable Switchの場合は以下の332行〜337行を変更すればシミュレーションが可能だ。
+以下にあるように、OligaterとBistable Switchの入力は既に実装済みである。
+(a)Oligatorの化学反応ネットワークに基づくシミュレーションをしたい場合
+以下の332行〜337行までの各化学物質のパラメータ（名前、濃度、拡散定数、安定性）を適宜変更、Bistable Switchの場合は以下の383行〜388行を変更すればシミュレーションが可能だ。
+(b)それ以外の化学ネットワークを使いたい場合。
+自分でEdge(反応タイプ(PEN or PP)、入力、最終生成物）を設定する必要がある。
+
 
 <img width="830" alt="スクリーンショット 2022-11-14 1 15 04" src="https://user-images.githubusercontent.com/93179388/201532163-28f3c9f0-f6f0-4678-b3b1-6c9816b54669.png">
 
+<img width="738" alt="スクリーンショット 2022-11-14 1 22 23" src="https://user-images.githubusercontent.com/93179388/201532437-ef5cfa58-92fe-4599-96e0-3b00be781308.png">
 
+
+# 環境
+・Jupyter Notebook 6.4.11
+・Python 3.10.4
 
 # 目的
 
