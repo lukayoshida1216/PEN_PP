@@ -5,9 +5,9 @@ PEN toolboxに加えてPredator Prey System(PP)も使用できる化学反応ネ
 
 
 【研究背景】
-<img width="360" alt="スクリーンショット 2022-11-14 0 20 08" src="https://user-images.githubusercontent.com/93179388/201529358-c1b8e6e1-8688-47f3-8db3-ec66e280be98.png">
 
 先行研究としてPENのみのシミュレーション(Aubert et al., 2014 )やPEN＋PPの常微分方程式構築（Aubert-Kato, Cazenille, 2020)があったが、PEN+PPを使ってかつ、中間反応体の自動生成から常微分方程式に基づいたシミュレーションまで行うツールは今まで実装されていなかった。
+<img width="360" alt="スクリーンショット 2022-11-14 0 20 08" src="https://user-images.githubusercontent.com/93179388/201529358-c1b8e6e1-8688-47f3-8db3-ec66e280be98.png">
 
 【目的】
 
@@ -16,8 +16,9 @@ PEN toolboxに加えてPredator Prey System(PP)も使用できる化学反応ネ
 プログラミングの知識が殆どなくてもPEN＋PPを使ったシミュレーションを行うことができる。
 
 【方法】
-<img width="423" alt="スクリーンショット 2022-11-14 0 22 38" src="https://user-images.githubusercontent.com/93179388/201529490-0b30c8cb-2082-4c3f-8230-9ab457ce4d6e.png">
+
 PPシステムやPEN toolboxに基づく抽象的な化学反応ネットワークを入力として受け取り、自動的に常微分方程式に組み込み、中間反応体を含めた全ての反応を自動的にシミュレーションさせた。
+<img width="423" alt="スクリーンショット 2022-11-14 0 22 38" src="https://user-images.githubusercontent.com/93179388/201529490-0b30c8cb-2082-4c3f-8230-9ab457ce4d6e.png">
 
 【検証】
 
