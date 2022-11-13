@@ -1,17 +1,10 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[2]:
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 
-# In[3]:
 
-
+#化学反応のテンプレート
 class Reaction:    
     def __init__(self,name,rate,reactants,products):   
         self.name=name
@@ -46,10 +39,10 @@ class Reaction:
         return str(self)
 
 
-# In[4]:
 
 
-class Species:  #物質の定義
+#化学物質のテンプレート
+class Species:  
     def __init__(self,name,concentration,diffusion, parameter= None):   #コンストラクタ：インスタンス生成の際に必ず呼び出される。初期化
         self.name=name
         self.init_conc = concentration
@@ -80,10 +73,7 @@ class Species:  #物質の定義
         return str(self)
         
 
-
-# In[5]:
-
-
+#酵素のテンプレート
 class Enzyme:
     def __init__(self, name, venz,Kenz):
         self.name = name
@@ -115,9 +105,7 @@ class Enzyme:
         return finalrate
 
 
-# In[6]:
-
-
+#化学反応ネットワークのテンプレート　Bistable SwitchだったらPENとPP一つづつEdgeの登録が必要
 class Edge:
     
     def __init__(self,type_name, template, input, output, options={}): #vertices:頂点の集合,ege:矢印の集合？(辞書形)
@@ -129,8 +117,8 @@ class Edge:
     
     
     
-
-class ReactionFactory:   #ひな型
+#化学反応ネットワークから反応中間体を自動生成
+class ReactionFactory:   
     
     #データを入れる領域 : コンストラクタ
     def __init__(self,name,vertices,kassoc = 0.2,extrastab=0.5, vpol=1050,vnick=80 ,vexo=300 
@@ -145,12 +133,13 @@ class ReactionFactory:   #ひな型
         self.exo = Enzyme("exo", vexo, [Kexos, Kexoext])
         
         
-        #処理の仕方(メソッド=関数）を書く領域、自分のデータを参照できる
+    #中間反応体を含めたすべての反応を返す関数
     def  get_reactions(self, edge):    #egeからproductを推測？
         if(edge==None):   #edeg=[]の時？
             return None
         
         all_reactions = []
+        #PEN;自己触媒(A->A)、活性化(A->B)、阻害の３つ
         if edge.type == "PEN":    #Nの自己増殖反応（自己触媒）
             #TODO edge datatype: type, template, input (list), output(list)
             #intermediate species 中間種
@@ -220,7 +209,7 @@ class ReactionFactory:   #ひな型
                 all_reactions+=[r12,r13,r14,r15]
         
         
-       # ege=(PP,P,[N],[P]) 
+        #捕食反応はPP:N+P->P+P 狐(P)がウサギ(N)を食べて増える
         if edge.type == "PP":       #N+P->P+P input [N] output [P]
             #Nもspecies作った方がいいよね？
             pred_alone = edge.template  # P
@@ -243,6 +232,7 @@ class ReactionFactory:   #ひな型
             
             all_reactions+=[r1,r2,r3,r4]
             
+        #自然減衰：N->Φ：死亡   
         if edge.type == "Exo":    
             #use "template" to define the type of degradation
             Kenz = self.exo.Kenz[0]
@@ -254,7 +244,7 @@ class ReactionFactory:   #ひな型
             int_species=[]
             all_reactions+=[r1]
             
-        return int_species, all_reactions    #中間生成物、全ての反応
+        return int_species, all_reactions    #(中間生成物、全ての反応)を返す
     
        
                 
@@ -264,7 +254,6 @@ class ReactionFactory:   #ひな型
     #N+G->N+N+G
 
 
-# In[7]:
 
 
 def get_total_rate(rate,reactants):   #反応物  rate:初期値                      
@@ -275,16 +264,16 @@ def get_total_rate(rate,reactants):   #反応物  rate:初期値
         val*=s.concentration   #反応物の濃度を全てかける。                      
     return val
 
+#ある反応がミカエリスメンテン式に従う時、rate=mm_rateで登録
 def mm_rate(reactants,saturators= None,Km=1.0,vmax=1.0): #ミカエリス・メンテ\ン式v=vmax*濃度/(Km+濃度 
     conc = np.product(np.array([reactant.concentration for reactant in reactants]),axis=0)             
     concsat = np.product(np.array([reactant.concentration for reactant in saturators]),axis=0) if saturators else conc   #後置if文 
     return vmax*conc/(Km+concsat)
 
 
-# In[8]:
 
-
-def discrete_laplacian(M):    #二次元の時：拡散項に使用          
+#ラプラシアン:二次元の時,拡散項に使用
+def discrete_laplacian(M):    #          
     """Get the discrete Laplacian of matrix M"""
 
     #変換                                                                       
@@ -311,9 +300,9 @@ def discrete_laplacian(M):    #二次元の時：拡散項に使用
     return R
 
 
-# In[9]:
 
 
+#常微分方程式
 def compute(t,y,species,reactions):                                                                     
     yprime = np.zeros(y.shape)  
     eq = {}
@@ -330,26 +319,27 @@ def compute(t,y,species,reactions):
     return yprime 
 
 
-# In[27]:
 
 
-#Oligator
+#Oligator(3つのPEN反応からなる）
 import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 count=0   
 
 
-                
-G1 = Species("G1",10+1,1.0, 10.0)    #名前、濃度、拡散、パラメーター(安定
+###################  ユーザはここのパラメータをを変更   #########################################       
+G1 = Species("G1",10+1,1.0, 10.0)    #Species(名前、初期濃度、拡散定数、安定性）
 G2 = Species("G2",1,1.0, 10.0)
 G3 = Species("G3",30,1.0, 10.0)
 N= Species("N",10,2.0, 100.0)
 M =  Species("M",0,2.0, 100.0)
 I =  Species("I",0,2.0, 1.0)
+###########################################################################################
 I.inhibitor = "inhibitor"
-#ここの数値を変える？
+
 species = [N,M,I]
+
 edge1=Edge("PEN", G1, [N,I], [N],options={"self-start": True})   #N->N自己触媒　　   input[0],input[1]
 edge2 = Edge("PEN", G2, [N], [M])  #N->M N->Pも同じ？
 edge3 = Edge("PEN", G3, [M], [I])
@@ -367,12 +357,12 @@ for edge in edges:
     print("\n")
 args=( species, reactions)    #Species Reaction
 
-res = solve_ivp(compute,[0,300],[s.init_conc for s in species],args=args)    #微分方程式をとく。関数f,t、初期値、Species Reaction?????
-#solve_ivp(関数、時間、[A0、B0、C0、,,,](species,reactions))
+res = solve_ivp(compute,[0,300],[s.init_conc for s in species],args=args)    
+#solve_ivp(関数、時間、[A0、B0、C0、,,,](species,reactions)) 微分方程式を解く
 
 fig = plt.figure()
 ax = plt.subplot(111)
-ax.plot(res.t,(res.y[:3]).T)    #これはただこの関数を試しただけ  時間を横軸に。yって何？初期値？
+ax.plot(res.t,(res.y[:3]).T)    
 
 #画像を保存
 #タイトルにパラメータと一緒に保存
@@ -382,13 +372,12 @@ ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 # Put a legend to the right of the current axis
 ax.legend([s.name for s in species], loc='center left', bbox_to_anchor=(1, 0.5))
 plt.savefig("G1=11_G2=1_G3=10"+".png")
-#振動するように変更する
 
 
-# In[ ]:
 
 
-#b Bistable Switch
+
+#Bistable Switch(双安定性スイッチ）：PEN一つとPP一つからなる
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
