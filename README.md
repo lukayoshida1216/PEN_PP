@@ -6,9 +6,14 @@ PEN toolboxに加えてPredator Prey System(PP)も使用できる化学反応ネ
 今回OligaterとBistable　Switchのモデルを化学反応ネットワークとして入力した。
 結果、入力の際設定した反応タイプ(PEN,PP)に応じて反応中間体を自動生成し、全ての反応の常微分方程式を解きシミュレーションまで一気通貫で行われた。実行結果は以下の通りだ。
 
-・Oligater
+・Oligater→三つのPEN反応で構成
+
+1つの分子(青)が自己触媒反応で濃度を増やして、もう１つの分子（オレンジ)を増やす。また、オレンジが抑制分子を増やして、青の触媒反応を抑制する。
+参考文献と同じく、テンプレート分子の濃度により、安定性、減衰振動、振動を確認できた。
+<img width="435" alt="スクリーンショット 2022-11-14 0 00 26" src="https://user-images.githubusercontent.com/93179388/201528408-24f08d9f-f266-4a41-84e7-ec7a9abb9782.png">
 
 
-
-・Bistable Switch(双安定性スイッチ）->PEN+PP
+・Bistable Switch(双安定性スイッチ）->PEN+PP反応で構成
+Nが自己触媒反応で濃度を増やすが、同時にP2が捕食して抑制分子のP1を増やす。
+NとP2の初期濃度により、Nが二つの安定状態になる可能性を確認できた。
 <img width="523" alt="Bistable" src="https://user-images.githubusercontent.com/93179388/201527889-b656225d-18f0-4e7a-963c-d90d3c071be7.png">
