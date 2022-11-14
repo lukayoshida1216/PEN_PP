@@ -66,6 +66,7 @@ PPシステムやPEN toolboxに基づく抽象的な化学反応ネットワー�
 ・Bistable Switch(双安定性スイッチ）→PEN+PP反応で構成
 Nが自己触媒反応で濃度を増やすが、同時にP2が捕食して抑制分子のP1を増やす。
 NとP2の初期濃度により、Nが二つの安定状態になる可能性を確認できた。
+
 <img width="523" alt="Bistable" src="https://user-images.githubusercontent.com/93179388/201527889-b656225d-18f0-4e7a-963c-d90d3c071be7.png">
 
 # まとめ・今後
