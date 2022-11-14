@@ -14,7 +14,7 @@ PEN toolboxは、任意の化学反応ネットワークを作るためのフレ
 <img width="360" alt="スクリーンショット 2022-11-14 0 20 08" src="https://user-images.githubusercontent.com/93179388/201529358-c1b8e6e1-8688-47f3-8db3-ec66e280be98.png">
 
 # 使い方
-(※入力方法が原始的で使いづらいため現在改良中)
+(※(c)の入力方法が原始的で使いづらいため現在改良中)
 
 同じレポジトリ内のPEN_PP.pyを実行する。(Jupyter notebookで実行）
 以下の検証にあるように、OligaterとBistable Switchの入力は既に実装済みである。
