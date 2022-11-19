@@ -20,9 +20,13 @@ PEN toolboxは、任意の化学反応ネットワークを作るためのフレ
 ①まずターミナル上で次のコマンドを打ちます。
 
 $ mkdir ファイル名  　　　//PEN_PPを実行したいディレクトリを作成
+
 $ cd ファイル名                 //作成したディレクトリに移動
+
 $ git clone https://github.com/lukayoshida1216/PEN_PP.git   //自分のパソコン上にソースコードをインストール
+
 $ cd PEN_PP/
+
 $ jupyter notebook
 
 ②ここまで実行すると、ローカルホストのURLが表示されるので、コピーしてプラウザに貼り付けるとjupyter notebookが実行されます。
